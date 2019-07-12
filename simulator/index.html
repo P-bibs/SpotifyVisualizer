@@ -3,24 +3,40 @@
 <html lang="en">
 
 <head>
-  
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <title>Paul Biberstein</title>
-  
+
   <link rel="stylesheet" href="main.css">
   <script src="main.js"></script>
+  <script src="Led.js"></script>
+  <script src="BeatLine.js"></script>
+  <script src="testers.js"></script>
+  <script src="BeatNode.js"></script>
 </head>
 
 <body onLoad="init()">
-  <div id="container">
-    <button onclick="ripple()">
-      click me
+  <div id="buttons">
+    <button onclick="threePulses()">
+        Three Pulses
+    </button>
+    <button onclick="ledTesterCallbacks()">
+        Led Callback test
+    </button>
+    <button onclick="beatLineTester()">
+        Beat Line
+    </button>
+    <button onclick="beatNodeTester()">
+        Beat Node
     </button>
   </div>
-  
+  <div id="container">
+
+  </div>
+
 </body>
 
 </html>
