@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Authenticate</title>
+<script>
+    function redirectToAuth() {
+        var base = "https://accounts.spotify.com/authorize";
+        var params = {
+            //TODO: fix this
+            client_id: '',
+            response_type: 'code',
+            redirect_uri: ("http://localhost" + "/authenticated",
+            scope: "streaming app-remote-control"
+        };
+
+        var esc = encodeURIComponent;
+        var query = Object.keys(params)
+            .map(k => esc(k) + '=' + esc(params[k]))
+            .join('&');
+
+        console.log("Query: " + query);
+        window.location.href = base + "?" + query
+    }
+</script>
+</head>
+
+<body>
+    <div style="display: flex; height 100vh; margin: 0px">
+        <button onClick="redirectToAuth()">
+            Click here to Authenticate
+        </button>
+    </div>
+</body>
+</html>
