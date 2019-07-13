@@ -1,10 +1,6 @@
-
+var fs = require('fs')
 var express = require('express');
 var app = express();
-
-// app.get('/', function(req, res) {
-//   res.send('Hello World!');
-// });
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
@@ -23,7 +19,7 @@ app.listen(3000, function() {
 
 //Change this function when switching from dev to build
 function writeCode(code) {
-    fs.writeFile("/tmp/test", "Hey there!", function(err) {
+    fs.writeFile(__dirname + "/../data/authCode.txt", code, function(err) {
         if(err) {
             return console.log(err);
         }

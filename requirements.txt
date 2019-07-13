@@ -1,0 +1,11 @@
+Adafruit-Blinka==2.1.6
+adafruit-circuitpython-neopixel==3.3.7
+Adafruit-PlatformDetect==1.1.0
+Adafruit-PureIO==0.2.3
+certifi==2019.6.16
+chardet==3.0.4
+idna==2.8
+requests==2.22.0
+spidev==3.4
+sysv-ipc==1.0.0
+urllib3==1.25.3

@@ -1,0 +1,32 @@
+{
+  "name": "spotifyvisualizer",
+  "version": "1.0.0",
+  "description": "An LED visualizer that hooks into Spotify",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/p-bibs/spotifyvisualizer.git"
+  },
+  "keywords": [
+    "spotify",
+    "led",
+    "raspberrypi"
+  ],
+  "author": "Paul Biberstein",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/p-bibs/spotifyvisualizer/issues"
+  },
+  "homepage": "https://github.com/p-bibs/spotifyvisualizer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "spotify-web-api-node": "^4.0.0",
+    "xmlhttprequest": "^1.8.0"
+  }
+}
