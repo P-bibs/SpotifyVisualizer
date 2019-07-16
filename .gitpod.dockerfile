@@ -2,7 +2,8 @@ FROM gitpod/workspace-full:latest
 
 USER root
 # Install custom tools, runtime, etc.
-RUN add-apt-repository -yu ppa:deadsnakes/ppa && apt-get update && apt-get install -y \
+RUN apt-get install software-properties-common \
+        && add-apt-repository -yu ppa:deadsnakes/ppa && apt-get update && apt-get install -y \
         python3.5 \
     && apt-get clean && rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
 
