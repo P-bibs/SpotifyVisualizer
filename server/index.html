@@ -5,12 +5,13 @@
 <title>Authenticate</title>
 <script>
     function redirectToAuth() {
+        var host = window.location.hostname
         var base = "https://accounts.spotify.com/authorize";
         var params = {
             //TODO: fix this
             client_id: '31f47db1c9b043b78f5ca5fbc53ac1d5',
             response_type: 'code',
-            redirect_uri: ("http://localhost:3000" + "/authenticated"),
+            redirect_uri: ("http://" + host + ":3000" + "/authenticated"),
             scope: "streaming app-remote-control user-read-currently-playing"
         };
 

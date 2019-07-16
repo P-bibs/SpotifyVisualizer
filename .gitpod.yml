@@ -1,5 +1,0 @@
-image:
-  file: .gitpod.dockerfile
-
-ports:
-- port: 3000
