@@ -24,6 +24,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "fs": "0.0.1-security",
+    "live-server": "^1.2.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "spotify-web-api-node": "^4.0.0",
