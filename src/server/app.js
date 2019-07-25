@@ -19,7 +19,7 @@ app.listen(3000, function() {
 
 //Change this function when switching from dev to build
 function writeCode(code) {
-    fs.writeFile(__dirname + "/../data/authCode.txt", code, function(err) {
+    fs.writeFile(__dirname + "/../../data/authCode.txt", code, function(err) {
         if(err) {
             return console.log(err);
         }

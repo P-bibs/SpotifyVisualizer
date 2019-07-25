@@ -15,9 +15,9 @@ class ApiLedInterfacer():
         self.analysis_request = None
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        with open(dir_path + '/../data/authCode.txt') as f:
+        with open(dir_path + '/../../data/authCode.txt') as f:
             code = f.readlines()
-        with open(dir_path + '/../data/secret.txt') as f:
+        with open(dir_path + '/../../data/secret.txt') as f:
             self.secret = f.readlines()
 
         response = auth.request_token(code, self.secret)
