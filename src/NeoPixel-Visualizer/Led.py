@@ -9,8 +9,8 @@ class Led:
 
     def setColor(self, color, duration, key):
         if (key):
-            if True in list(map(lambda item : item.key==key, self.colorStack)):
-                index = list(map(lambda item : item.key==key, self.colorStack)).index(True)
+            if True in list(map(lambda item : item['key']==key, self.colorStack)):
+                index = list(map(lambda item : item['key']==key, self.colorStack)).index(True)
                 self.colorStack[index] = {
                     "color": color,
                     "key": key
@@ -29,7 +29,7 @@ class Led:
 
     def clearColors(self, key):
         for i in range(len(self.colorStack)):
-            if (self.colorStack[i].key == key):
+            if (self.colorStack[i]['key'] == key):
                 self.colorStack.pop(i)
 
     def averageColors(self, color1, color2):
@@ -39,22 +39,23 @@ class Led:
         return [r, g, b]
 
     def update(self, dt):
-        for color in self.colorStack:
-            color.ttl -= dt
+        pass
+        #for color in self.colorStack:
+        #    color['ttl'] = color['ttl'] - dt
 
-        for i in range(len(self.colorStack)-1, -1, -1):
-            if (self.colorStack[i].ttl < 0):
-                self.colorStack.pop(i)
-                print("Popped from loc " + i + " on led " + self.led_id)
+        # for i in range(len(self.colorStack)-1, -1, -1):
+        #     if (self.colorStack[i].ttl < 0):
+        #         self.colorStack.pop(i)
+        #         print("Popped from loc " + i + " on led " + self.led_id)
 
     def render(self):
 
         if len(self.colorStack) == 0:
             color = self.defaultColor
         elif len(self.colorStack) == 1:
-            color = self.colorStack[0].color
+            color = self.colorStack[0]['color']
         else:
-            colors = list(map(lambda item : item.color, self.colorStack))
+            colors = list(map(lambda item : item['color'], self.colorStack))
             color = functools.reduce(self.averageColors, colors)
 
         return color

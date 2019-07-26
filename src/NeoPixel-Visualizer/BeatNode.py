@@ -12,7 +12,7 @@ class BeatNode:
         distances = []
         for i in range(self.ledCount):
             distances.append(abs(self.location-i))
-        return map((lambda distance : distance < self.radius), distances)
+        return list(map((lambda distance : distance < self.radius), distances))
 
     def update(self, dt):
         self.location += self.velocity * dt

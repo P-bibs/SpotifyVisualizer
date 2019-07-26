@@ -14,11 +14,10 @@ class BeatLine:
         self.beatNodes = []
         self.nextKey = 1
 
-        #TODO determine pixel_pin, num_pixels, and pixel order
-        self.pixels = neopixel.NeoPixel(pixel_pin, num_pixels, auto_write=False, pixel_order=ORDER)
+        self.pixels = neopixel.NeoPixel(board.D18, ledCount, auto_write=False)
 
     def requestKey(self):
-        print("pulled key " + self.nextKey)
+        print("pulled key " + str(self.nextKey))
         self.nextKey += 1
         return self.nextKey - 1
 

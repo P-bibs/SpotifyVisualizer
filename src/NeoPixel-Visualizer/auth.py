@@ -9,7 +9,7 @@ def request_token(code, secret):
             data={
                 'grant_type': 'authorization_code',
                 'code': code,
-                'redirect_uri': 'http://localhost:3000/authenticated',
+                'redirect_uri': redirect_uri,
                 'client_id': '31f47db1c9b043b78f5ca5fbc53ac1d5',
                 'client_secret': secret
             }

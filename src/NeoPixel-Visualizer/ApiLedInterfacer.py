@@ -2,10 +2,13 @@ import os
 import time
 import json
 import auth
+import board
+import neopixel
 import AsyncSpotifyWrapper
+import BeatLine
 
 class ApiLedInterfacer():
-    def __init__(self, ping_interval=5):
+    def __init__(self, ping_interval=15):
         self.ping_interval = ping_interval
         self.ping_timer = 0
         self.beat_counter = 0
@@ -13,12 +16,13 @@ class ApiLedInterfacer():
         self.intervals = []
         self.playback_request = None
         self.analysis_request = None
+        self.beatLine = BeatLine.BeatLine(5, [255, 255, 255])
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
         with open(dir_path + '/../../data/authCode.txt') as f:
             code = f.readlines()
         with open(dir_path + '/../../data/secret.txt') as f:
-            self.secret = f.readlines()
+            self.secret = f.readlines()[0].strip('\n')
 
         response = auth.request_token(code, self.secret)
         self.access_token = response['access_token']
@@ -77,10 +81,18 @@ class ApiLedInterfacer():
         print('Intervals Left: ' + str(len(self.intervals)))
         print('=================\n')
 
+    def beat(self):
+        self.beatLine.createBeat(4, 30, [255, 0, 0])
+
+        self.beat_counter += 1
+        print("beat " + str(self.beat_counter % 4) + " at " + str(time.time()))
+        self.intervals.pop(0)
+
     def update(self, dt):
         self.ttl -= dt
         self.progress += dt
         self.ping_timer += dt
+        self.beatLine.update(dt)
 
         if self.ping_timer > self.ping_interval:
             self.fetch_playback()
@@ -98,9 +110,9 @@ class ApiLedInterfacer():
             self.analysis_request = None
 
         if len(self.intervals) > 0 and self.progress > self.intervals[0]:
-            self.beat_counter += 1
-            print("beat " + str(self.beat_counter % 4) + " at " + str(time.time()))
-            self.intervals.pop(0)
+            self.beat()
+
+        self.beatLine.render()
 
 
     def exit(self):
