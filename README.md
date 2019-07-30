@@ -1,3 +1,3 @@
 # PyFyPi
 
-A PYthon-based visualizer that uses spotiFY as a source and runs on raspberry PI
+A **PY**thon-based visualizer that uses spoti**FY** as a source and runs on raspberry **PI**
