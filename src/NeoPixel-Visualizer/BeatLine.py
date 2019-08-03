@@ -3,6 +3,8 @@ import neopixel
 from Led import Led
 from BeatNode import BeatNode
 
+ORDER = neopixel.GRB
+
 class BeatLine:
     def __init__(self, ledCount, defaultColor):
         self.leds = []
@@ -14,10 +16,9 @@ class BeatLine:
         self.beatNodes = []
         self.nextKey = 1
 
-        self.pixels = neopixel.NeoPixel(board.D18, ledCount, auto_write=False)
+        self.pixels = neopixel.NeoPixel(board.D18, ledCount, auto_write=False, pixel_order=ORDER)
 
     def requestKey(self):
-        print("pulled key " + str(self.nextKey))
         self.nextKey += 1
         return self.nextKey - 1
 
@@ -43,7 +44,6 @@ class BeatLine:
         for i in range(len(self.beatNodes)-1, -1, -1):
             if self.beatNodes[i].alive == False:
                 self.beatNodes.pop(i)
-
 
 
     def render(self):

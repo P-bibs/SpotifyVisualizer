@@ -1,9 +1,15 @@
 import json
+import os
 from requests_futures.sessions import FuturesSession
 
 def request_token(code, secret):
     with FuturesSession() as session:
         print('requesting a token')
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+
+        with open(dir_path + '/../../data/redirect.txt') as f:
+            redirect_uri = f.readlines()[0].strip('\n')
+
         request = session.post(
             "https://accounts.spotify.com/api/token",
             data={

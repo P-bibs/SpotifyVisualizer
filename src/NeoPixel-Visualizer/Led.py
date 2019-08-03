@@ -28,7 +28,7 @@ class Led:
             })
 
     def clearColors(self, key):
-        for i in range(len(self.colorStack)):
+        for i in range(len(self.colorStack)-1, -1, -1):
             if (self.colorStack[i]['key'] == key):
                 self.colorStack.pop(i)
 

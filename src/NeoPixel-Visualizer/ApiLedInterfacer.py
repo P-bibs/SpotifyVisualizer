@@ -7,6 +7,12 @@ import neopixel
 import AsyncSpotifyWrapper
 import BeatLine
 
+BEAT_COLORS = [
+    (255, 0, 0),
+    (0, 255, 0),
+    (255, 100, 0)
+]
+
 class ApiLedInterfacer():
     def __init__(self, ping_interval=15):
         self.ping_interval = ping_interval
@@ -16,7 +22,7 @@ class ApiLedInterfacer():
         self.intervals = []
         self.playback_request = None
         self.analysis_request = None
-        self.beatLine = BeatLine.BeatLine(5, [255, 255, 255])
+        self.beatLine = BeatLine.BeatLine(40, [50, 50, 50])
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
         with open(dir_path + '/../../data/authCode.txt') as f:
@@ -82,7 +88,7 @@ class ApiLedInterfacer():
         print('=================\n')
 
     def beat(self):
-        self.beatLine.createBeat(4, 30, [255, 0, 0])
+        self.beatLine.createBeat(2, 30, BEAT_COLORS[self.beat_counter % 3])
 
         self.beat_counter += 1
         print("beat " + str(self.beat_counter % 4) + " at " + str(time.time()))
