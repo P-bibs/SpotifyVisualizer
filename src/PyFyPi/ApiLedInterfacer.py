@@ -22,7 +22,7 @@ class ApiLedInterfacer():
         self.intervals = []
         self.playback_request = None
         self.analysis_request = None
-        self.beatLine = BeatLine.BeatLine(40, [50, 50, 50])
+        self.beat_line = BeatLine.BeatLine(40, [50, 50, 50])
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
         with open(dir_path + '/../../data/authCode.txt') as f:
@@ -88,7 +88,7 @@ class ApiLedInterfacer():
         print('=================\n')
 
     def beat(self):
-        self.beatLine.createBeat(2, 30, BEAT_COLORS[self.beat_counter % 3])
+        self.beat_line.create_beat(2, 30, BEAT_COLORS[self.beat_counter % 3])
 
         self.beat_counter += 1
         print("beat " + str(self.beat_counter % 4) + " at " + str(time.time()))
@@ -98,7 +98,7 @@ class ApiLedInterfacer():
         self.ttl -= dt
         self.progress += dt
         self.ping_timer += dt
-        self.beatLine.update(dt)
+        self.beat_line.update(dt)
 
         if self.ping_timer > self.ping_interval:
             self.fetch_playback()
@@ -118,7 +118,7 @@ class ApiLedInterfacer():
         if len(self.intervals) > 0 and self.progress > self.intervals[0]:
             self.beat()
 
-        self.beatLine.render()
+        self.beat_line.render()
 
 
     def exit(self):

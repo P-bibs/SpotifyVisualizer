@@ -6,44 +6,44 @@ from BeatNode import BeatNode
 ORDER = neopixel.GRB
 
 class BeatLine:
-    def __init__(self, ledCount, defaultColor):
+    def __init__(self, led_count, default_color):
         self.leds = []
-        for i in range(ledCount):
-            self.leds.append(Led(i, defaultColor))
+        for i in range(led_count):
+            self.leds.append(Led(i, default_color))
 
-        self.defaultColor = defaultColor
+        self.default_color = default_color
 
-        self.beatNodes = []
-        self.nextKey = 1
+        self.beat_nodes = []
+        self.next_key = 1
 
-        self.pixels = neopixel.NeoPixel(board.D18, ledCount, auto_write=False, pixel_order=ORDER)
+        self.pixels = neopixel.NeoPixel(board.D18, led_count, auto_write=False, pixel_order=ORDER)
 
-    def requestKey(self):
-        self.nextKey += 1
-        return self.nextKey - 1
+    def _request_key(self):
+        self.next_key += 1
+        return self.next_key - 1
 
-    def createBeat(self, radius, velocity, color):
-        key = self.requestKey()
-        self.beatNodes.append(BeatNode(radius, velocity, color, len(self.leds), key))
+    def create_beat(self, radius, velocity, color):
+        key = self._request_key()
+        self.beat_nodes.append(BeatNode(radius, velocity, color, len(self.leds), key))
 
 
     def update(self, dt):
         for led in self.leds:
             led.update(dt)
 
-        for beatNode in self.beatNodes:
-            beatNode.update(dt)
-            inRange = beatNode.getInRange()
+        for beat_node in self.beat_nodes:
+            beat_node.update(dt)
+            in_range = beat_node.get_in_range()
             for i in range(len(self.leds)):
-                if inRange[i]:
-                    self.leds[i].setColor(beatNode.color, 0, beatNode.key)
+                if in_range[i]:
+                    self.leds[i].set_color(beat_node.color, 0, beat_node.key)
 
                 else:
-                    self.leds[i].clearColors(beatNode.key)
+                    self.leds[i].clear_colors(beat_node.key)
 
-        for i in range(len(self.beatNodes)-1, -1, -1):
-            if self.beatNodes[i].alive == False:
-                self.beatNodes.pop(i)
+        for i in range(len(self.beat_nodes)-1, -1, -1):
+            if self.beat_nodes[i].alive == False:
+                self.beat_nodes.pop(i)
 
 
     def render(self):
