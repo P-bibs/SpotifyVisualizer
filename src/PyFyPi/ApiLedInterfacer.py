@@ -22,31 +22,55 @@ class ApiLedInterfacer():
         self.intervals = []
         self.playback_request = None
         self.analysis_request = None
+        self.refresh_request = None
         self.beat_line = BeatLine.BeatLine(40, [50, 50, 50])
 
+        # Load config file
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        with open(dir_path + '/../../data/authCode.txt') as f:
-            code = f.readlines()
-        with open(dir_path + '/../../data/secret.txt') as f:
-            self.secret = f.readlines()[0].strip('\n')
+        with open(dir_path + '/../../config.json') as f:
+            config = json.load(f)
 
-        response = auth.request_token(code, self.secret)
-        self.access_token = response['access_token']
-        self.refresh_token = response['refresh_token']
+        # If a refresh token doesn't exist, request one
+        if config['DATA']['refresh_token'] == '':
+            response = auth.request_token(
+                config['SETUP']['id'],
+                config['SETUP']['secret'],
+                config['DATA']['code'],
+                config['SETUP']['redirect']
+            )
+
+            refresh_token = response['refresh_token']
+            with open(dir_path + '/../../config.json', 'w') as f:
+                config['DATA'] = {**config['DATA'], "refresh_token": refresh_token}
+                json.dump(config, f, ensure_ascii=False, indent=4)
+
+        # Use refresh token to get access token
+        self.id = config['SETUP']['id']
+        self.secret = config['SETUP']['secret']
+        self.refresh_token = config['DATA']['refresh_token']
+        response = auth.request_refresh(self.id, self.secret, self.refresh_token, True)
+
+        print("response text:")
+        print(response)
+        access_token = response['access_token']
         self.ttl = response['expires_in']
-        self.spotify = AsyncSpotifyWrapper.AsyncSpotifyWrapper(self.access_token)
+        self.spotify = AsyncSpotifyWrapper.AsyncSpotifyWrapper(access_token)
 
         self.track = ""
         self.fetch_playback()
 
 
-    def refresh_credentials(self):
-        auth.request_refresh(
-            self.refresh_token,
+    def fetch_refresh(self):
+        self.refresh_request = auth.request_refresh(
+            self.id,
             self.secret,
-            (lambda response: self.spotify.update_token(response.new_token))
+            self.refresh_token
         )
 
+    def set_refresh(self, response):
+        access_token = json.loads(response.result().text)['access_token']
+        self.spotify.update_token(access_token)
+    
     def fetch_playback(self):
         self.playback_request = self.spotify.get_current_playback()
 
@@ -100,6 +124,10 @@ class ApiLedInterfacer():
         self.ping_timer += dt
         self.beat_line.update(dt)
 
+        if self.refresh_request and self.refresh_request.done():
+            self.set_refresh(self.refresh_request)
+            self.refresh_request = None
+
         if self.ping_timer > self.ping_interval:
             self.fetch_playback()
             self.ping_timer = 0
@@ -109,7 +137,7 @@ class ApiLedInterfacer():
             self.playback_request = None
 
         if self.ttl < 60:
-            self.refresh_credentials()
+            self.fetch_refresh()
 
         if self.analysis_request and self.analysis_request.done():
             self.trim_intervals(self.analysis_request)

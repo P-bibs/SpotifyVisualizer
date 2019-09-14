@@ -1,0 +1,14 @@
+{
+    "SETUP": {
+        "id": "31f47db1c9b043b78f5ca5fbc53ac1d5",
+        "secret": "de462527a8324a4d9a7cd2ae2ad4ce1d",
+        "redirect": "http://pi.paulbiberstein.me:3000/authenticated",
+        "scope": "streaming app-remote-control user-read-currently-playing"
+    },
+    "DATA": {
+        "code": "",
+        "last_run": "",
+        "access_token": "",
+        "refresh_token": "AQAfkq-jiXIHi8DmK2T6IkUgji7hGLlelt2HRdSLD4gd4aHWwzEYGd8kx9vjKHPJXjmvPtGA5vlMS4DzQdXpPH7cNbEkLyMZBHC4YYdxsrJWjClolwcsoJ4x57eVsPDLfa5-tw"
+    }
+}
