@@ -23,7 +23,7 @@ class ApiLedInterfacer():
         self.playback_request = None
         self.analysis_request = None
         self.refresh_request = None
-        self.beat_line = BeatLine.BeatLine(40, [50, 50, 50])
+        self.beat_line = BeatLine.BeatLine(70, [50, 50, 50])
 
         # Load config file
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -150,4 +150,4 @@ class ApiLedInterfacer():
 
 
     def exit(self):
-        pass
+        self.beat_line.clear()

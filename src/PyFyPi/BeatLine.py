@@ -26,6 +26,12 @@ class BeatLine:
         key = self._request_key()
         self.beat_nodes.append(BeatNode(radius, velocity, color, len(self.leds), key))
 
+    def clear(self):
+        print("Clearing leds")
+        self.beat_nodes = []
+        for i in range(len(self.leds)):
+                self.pixels[i] = [0, 0, 0]
+        self.pixels.show()
 
     def update(self, dt):
         for led in self.leds:
@@ -47,7 +53,11 @@ class BeatLine:
 
 
     def render(self):
-        for i, led in enumerate(self.leds):
-            self.pixels[i] = led.render()
+        if len(self.beat_nodes) == 0:
+            for i, led in enumerate(self.leds):
+                self.pixels[i] = [0, 0, 0]
+        else:
+            for i, led in enumerate(self.leds):
+                self.pixels[i] = led.render()
 
         self.pixels.show()
