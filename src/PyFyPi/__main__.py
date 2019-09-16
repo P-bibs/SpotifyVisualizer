@@ -1,17 +1,16 @@
 import os
 import threading
 import time
-import auth
-import ApiLedInterfacer
+import StateMachine
 
-interfacer = ApiLedInterfacer.ApiLedInterfacer()
+state_machine = StateMachine.StateMachine()
 current_time = time.time()
 while True:
     try:
         dt = time.time() - current_time
         current_time = time.time()
-        interfacer.update(dt)
+        state_machine.update(dt)
         
     except KeyboardInterrupt:
-        interfacer.exit()
+        state_machine.exit()
         break
