@@ -1,5 +1,4 @@
-import board
-import neopixel
+import board, neopixel
 from Led import Led
 from BeatNode import BeatNode
 

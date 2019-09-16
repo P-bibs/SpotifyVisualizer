@@ -1,11 +1,6 @@
-import os
-import time
-import json
-import auth
-import board
-import neopixel
-import AsyncSpotifyWrapper
-import BeatLine
+import os, time, json
+import board, neopixel
+import auth, AsyncSpotifyWrapper, BeatLine
 
 BEAT_COLORS = [
     (255, 0, 0),

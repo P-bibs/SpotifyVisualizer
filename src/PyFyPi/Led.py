@@ -1,5 +1,4 @@
-import math
-import functools
+import math, functools
 
 class Led:
     def __init__(self, led_id, default_color):
