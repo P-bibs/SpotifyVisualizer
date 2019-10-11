@@ -60,3 +60,7 @@ class BeatLine:
                 self.pixels[i] = led.render()
 
         self.pixels.show()
+
+    def exit(self):
+        self.clear()
+        self.pixels.deinit()

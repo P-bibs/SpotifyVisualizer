@@ -9,7 +9,9 @@ BEAT_COLORS = [
 ]
 
 class ApiLedInterfacer():
-    def __init__(self, ping_interval=15):
+    def __init__(self, g_state_machine, ping_interval=15):
+        self.g_state_machine = g_state_machine
+
         self.ping_interval = ping_interval
         self.ping_timer = 0
         self.beat_counter = 0
@@ -70,10 +72,16 @@ class ApiLedInterfacer():
         self.playback_request = self.spotify.get_current_playback()
 
     def sync_playback(self, response):
+        """Return 1 if playing, 0 otherwise"""
         print('Sync Playback called at ' + str(time.time()))
 
         currently_playing = json.loads(response.result().text)
         rtt = time.time() - response.result().init_time
+        
+        if currently_playing['is_playing'] == False:
+            print("is_playing is False, changing state")
+            self.g_state_machine.change_state('IdleState')
+            return 0
 
         self.progress = (currently_playing['progress_ms']/1000)  + rtt / 2
 
@@ -88,6 +96,8 @@ class ApiLedInterfacer():
         print('Current progress: ' + str(self.progress))
         print('Current Track: ' + self.track)
         print('=================\n')
+
+        return 1
 
     def fetch_intervals(self):
         self.analysis_request = self.spotify.get_audio_analysis(self.track)
@@ -128,7 +138,8 @@ class ApiLedInterfacer():
             self.ping_timer = 0
 
         if self.playback_request and self.playback_request.done():
-            self.sync_playback(self.playback_request)
+            is_playing = self.sync_playback(self.playback_request)
+            if not is_playing: return
             self.playback_request = None
 
         if self.ttl < 60:
@@ -145,4 +156,5 @@ class ApiLedInterfacer():
 
 
     def exit(self):
-        self.beat_line.clear()
+        print("Releasing neopixel")
+        self.beat_line.exit()
