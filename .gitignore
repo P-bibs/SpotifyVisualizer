@@ -6,4 +6,6 @@ env/*
 __pycache__
 sync.sh
 .vscode
+*.pyc
 key.txt
+config.json

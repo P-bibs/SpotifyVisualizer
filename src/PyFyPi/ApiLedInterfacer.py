@@ -4,12 +4,14 @@ import auth, AsyncSpotifyWrapper, BeatLine
 
 BEAT_COLORS = [
     (255, 0, 0),
-    (0, 255, 0),
-    (255, 100, 0)
+    (4,230,0),
+    (255, 100, 0),
 ]
 
+LED_COUNT = 70
+
 class ApiLedInterfacer():
-    def __init__(self, g_state_machine, ping_interval=15):
+    def __init__(self, g_state_machine, beat_line, ping_interval=15):
         self.g_state_machine = g_state_machine
 
         self.ping_interval = ping_interval
@@ -20,7 +22,10 @@ class ApiLedInterfacer():
         self.playback_request = None
         self.analysis_request = None
         self.refresh_request = None
-        self.beat_line = BeatLine.BeatLine(70, [50, 50, 50])
+        self.beat_line = beat_line or BeatLine.BeatLine(LED_COUNT, [50, 50, 50])
+        self.beat_line.render()
+        print("Clearing beat_line")
+        self.beat_line.clear()
 
         # Load config file
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -80,7 +85,7 @@ class ApiLedInterfacer():
         
         if currently_playing['is_playing'] == False:
             print("is_playing is False, changing state")
-            self.g_state_machine.change_state('IdleState')
+            self.g_state_machine.change_state('IdleState', beat_line=self.beat_line)
             return 0
 
         self.progress = (currently_playing['progress_ms']/1000)  + rtt / 2
@@ -95,6 +100,7 @@ class ApiLedInterfacer():
         print('RTT is %s' % rtt)
         print('Current progress: ' + str(self.progress))
         print('Current Track: ' + self.track)
+        print("Beats: " + str(self.beat_line.beat_nodes))
         print('=================\n')
 
         return 1
@@ -117,7 +123,8 @@ class ApiLedInterfacer():
         print('=================\n')
 
     def beat(self):
-        self.beat_line.create_beat(2, 30, BEAT_COLORS[self.beat_counter % 3])
+        self.beat_line.create_beat(2, 0, 30, BEAT_COLORS[self.beat_counter % len(BEAT_COLORS)])
+        #self.beat_line.create_beat(LED_COUNT / 2, LED_COUNT / 2, 0, BEAT_COLORS[self.beat_counter % 3])
 
         self.beat_counter += 1
         print("beat " + str(self.beat_counter % 4) + " at " + str(time.time()))
@@ -156,5 +163,5 @@ class ApiLedInterfacer():
 
 
     def exit(self):
-        print("Releasing neopixel")
         self.beat_line.exit()
+        print("Play state exit completed")

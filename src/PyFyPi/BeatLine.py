@@ -21,15 +21,19 @@ class BeatLine:
         self.next_key += 1
         return self.next_key - 1
 
-    def create_beat(self, radius, velocity, color):
+    def create_beat(self, radius, position, velocity, color):
+        if len(self.beat_nodes) > 15:
+            self.beat_nodes.pop(0)
+        
         key = self._request_key()
-        self.beat_nodes.append(BeatNode(radius, velocity, color, len(self.leds), key))
+        self.beat_nodes.append(BeatNode(radius, position, velocity, color, len(self.leds), key))
 
     def clear(self):
         print("Clearing leds")
         self.beat_nodes = []
         for i in range(len(self.leds)):
-                self.pixels[i] = [0, 0, 0]
+            self.pixels[i] = [0, 0, 0]
+            self.leds[i].color_stack = []
         self.pixels.show()
 
     def update(self, dt):
@@ -62,5 +66,6 @@ class BeatLine:
         self.pixels.show()
 
     def exit(self):
+        print("Clearing pixels")
         self.clear()
-        self.pixels.deinit()
+        print("Pixels cleared")

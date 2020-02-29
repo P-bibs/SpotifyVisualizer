@@ -11,7 +11,7 @@ class AsyncSpotifyWrapper:
 
         Update token with update_token function."""
         self.token = token
-        self.session = FuturesSession()
+        self.session = FuturesSession(max_workers=5)
 
     def update_token(self, token):
         """Update authentication token."""
