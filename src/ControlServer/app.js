@@ -5,9 +5,8 @@ var app = express();
 
 app.get('/start', function(req, res){
     let key = req.query.key
-    let execError;
     if (key == fs.readFileSync(__dirname + "/key.txt", 'utf8')) {
-        exec('sudo systemctl start pyfypi.service', (err, stdout, stderr) => {
+        exec('sudo systemctl start PyFyPi.service', (err, stdout, stderr) => {
             if (err) {
                 console.log("Error")
                 console.log(err)
@@ -19,21 +18,15 @@ app.get('/start', function(req, res){
         });
     }
     else {
+        console.log("Invalid authentication key")
         res.send("Invalid authentication key")
-    }
-    if (execError == ""){
-        res.send(`Error:\n ${execError}`)
-    }
-    else {
-        res.send("Success")
     }
 })
 
 app.get('/stop', function(req, res){
     let key = req.query.key
-    let execError = "";
     if (key == fs.readFileSync(__dirname + "/key.txt", 'utf8')) {
-        exec('sudo systemctl stop pyfypi.service', (err, stdout, stderr) => {
+        exec('sudo systemctl stop PyFyPi.service', (err, stdout, stderr) => {
             if (err) {
                 console.log("Error")
                 console.log(err)
@@ -45,13 +38,8 @@ app.get('/stop', function(req, res){
         });
     }
     else {
+        console.log("Invalid authentication key")
         res.send("Invalid authentication key")
-    }
-    if (execError == ""){
-        res.send(`Error:\n ${execError}`)
-    }
-    else {
-        res.send("Success")
     }
 })
 
