@@ -1,13 +1,8 @@
 import json
-import os
 import time
 
-import board
-import neopixel
-
-import AsyncSpotifyWrapper
-import auth
-import BeatLine
+from ..lib import AsyncSpotifyWrapper, auth
+from .BeatLine import BeatLine
 
 BEAT_COLORS = [
     (255, 0, 0),
@@ -27,7 +22,7 @@ class ApiLedInterfacer():
         self.playback_request = None
         self.analysis_request = None
         self.refresh_request = None
-        self.beat_line = BeatLine.BeatLine(pixels, [50, 50, 50])
+        self.beat_line = BeatLine(pixels, [50, 50, 50])
         self.beat_line.render()
         print("Clearing beat_line")
         self.beat_line.clear()

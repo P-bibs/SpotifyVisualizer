@@ -1,7 +1,9 @@
 """Functions for requesting and refreshing authentication tokens for the Spotify API"""
 
-import json, os
+import json
+
 from requests_futures.sessions import FuturesSession
+
 
 def request_token(id, secret, code, redirect):
     with FuturesSession() as session:

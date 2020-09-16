@@ -1,5 +1,6 @@
 import math, functools
 
+
 class Led:
     def __init__(self, led_id, default_color):
         self.led_id = led_id

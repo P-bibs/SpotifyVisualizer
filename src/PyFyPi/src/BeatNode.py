@@ -1,5 +1,6 @@
 import math
 
+
 class BeatNode:
     def __init__(self, radius, position, velocity, color, led_count, key):
         self.radius = radius

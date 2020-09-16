@@ -1,6 +1,5 @@
-import board, neopixel
-from Led import Led
-from BeatNode import BeatNode
+from .BeatNode import BeatNode
+from .Led import Led
 
 
 class BeatLine:

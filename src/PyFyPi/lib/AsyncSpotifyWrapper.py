@@ -1,5 +1,7 @@
 import time
+
 from requests_futures.sessions import FuturesSession
+
 
 class AsyncSpotifyWrapper:
     """Contains functions for querying audio analysis and current playback endpoints.

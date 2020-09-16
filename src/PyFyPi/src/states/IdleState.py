@@ -1,4 +1,5 @@
-from BaseState import BaseState
+from .BaseState import BaseState
+
 
 class IdleState(BaseState):
     def __init__(self, g_state_machine, extra_state):

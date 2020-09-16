@@ -1,4 +1,5 @@
-from BaseState import BaseState
+from .states.BaseState import BaseState
+
 
 class StateMachine():
     def __init__(self, states, global_state):

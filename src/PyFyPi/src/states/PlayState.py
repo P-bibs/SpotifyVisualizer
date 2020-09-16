@@ -1,7 +1,6 @@
-import ApiLedInterfacer
-import auth
-import config_utils
-from BaseState import BaseState
+from ...lib import auth, config_utils
+from ..ApiLedInterfacer import ApiLedInterfacer
+from .BaseState import BaseState
 
 
 class PlayState(BaseState):
@@ -12,7 +11,7 @@ class PlayState(BaseState):
         config = config_utils.read_config()
         config = self.check_and_update_refresh_token(config)
 
-        self.interfacer = ApiLedInterfacer.ApiLedInterfacer(g_state_machine, global_state["pixels"], config)
+        self.interfacer = ApiLedInterfacer(g_state_machine, global_state["pixels"], config)
 
     def check_and_update_refresh_token(self, config):
         # If a refresh token doesn't exist, request one

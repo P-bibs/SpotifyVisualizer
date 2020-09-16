@@ -1,6 +1,11 @@
-import os, threading, time, signal
-import neopixel, board
-import StateMachine, IdleState, PlayState
+import signal
+import time
+
+import board
+import neopixel
+
+from .src import StateMachine
+from .src.states import IdleState, PlayState
 
 ORDER = neopixel.GRB
 LED_COUNT = 70
