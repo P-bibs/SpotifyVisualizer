@@ -2,12 +2,11 @@ import board, neopixel
 from Led import Led
 from BeatNode import BeatNode
 
-ORDER = neopixel.GRB
 
 class BeatLine:
-    def __init__(self, led_count, default_color):
+    def __init__(self, pixels, default_color):
         self.leds = []
-        for i in range(led_count):
+        for i in range(len(pixels)):
             self.leds.append(Led(i, default_color))
 
         self.default_color = default_color
@@ -15,7 +14,7 @@ class BeatLine:
         self.beat_nodes = []
         self.next_key = 1
 
-        self.pixels = neopixel.NeoPixel(board.D18, led_count, auto_write=False, pixel_order=ORDER)
+        self.pixels = pixels
 
     def _request_key(self):
         self.next_key += 1

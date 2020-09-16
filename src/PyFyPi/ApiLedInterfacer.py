@@ -1,6 +1,13 @@
-import os, time, json
-import board, neopixel
-import auth, AsyncSpotifyWrapper, BeatLine
+import json
+import os
+import time
+
+import board
+import neopixel
+
+import AsyncSpotifyWrapper
+import auth
+import BeatLine
 
 BEAT_COLORS = [
     (255, 0, 0),
@@ -8,13 +15,11 @@ BEAT_COLORS = [
     (255, 100, 0),
 ]
 
-LED_COUNT = 70
-
 class ApiLedInterfacer():
-    def __init__(self, g_state_machine, beat_line, ping_interval=15):
+    def __init__(self, g_state_machine, pixels, config):
         self.g_state_machine = g_state_machine
 
-        self.ping_interval = ping_interval
+        self.ping_interval = 15
         self.ping_timer = 0
         self.beat_counter = 0
         self.progress = 0
@@ -22,29 +27,10 @@ class ApiLedInterfacer():
         self.playback_request = None
         self.analysis_request = None
         self.refresh_request = None
-        self.beat_line = beat_line or BeatLine.BeatLine(LED_COUNT, [50, 50, 50])
+        self.beat_line = BeatLine.BeatLine(pixels, [50, 50, 50])
         self.beat_line.render()
         print("Clearing beat_line")
         self.beat_line.clear()
-
-        # Load config file
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        with open(dir_path + '/../../config.json') as f:
-            config = json.load(f)
-
-        # If a refresh token doesn't exist, request one
-        if config['DATA']['refresh_token'] == '':
-            response = auth.request_token(
-                config['SETUP']['id'],
-                config['SETUP']['secret'],
-                config['DATA']['code'],
-                config['SETUP']['redirect']
-            )
-
-            refresh_token = response['refresh_token']
-            with open(dir_path + '/../../config.json', 'w') as f:
-                config['DATA'] = {**config['DATA'], "refresh_token": refresh_token}
-                json.dump(config, f, ensure_ascii=False, indent=4)
 
         # Use refresh token to get access token
         self.id = config['SETUP']['id']
@@ -85,7 +71,7 @@ class ApiLedInterfacer():
         
         if currently_playing['is_playing'] == False:
             print("is_playing is False, changing state")
-            self.g_state_machine.change_state('IdleState', beat_line=self.beat_line)
+            self.g_state_machine.change_state('IdleState')
             return 0
 
         self.progress = (currently_playing['progress_ms']/1000)  + rtt / 2
@@ -164,4 +150,3 @@ class ApiLedInterfacer():
 
     def exit(self):
         self.beat_line.exit()
-        print("Play state exit completed")

@@ -1,12 +1,17 @@
 import os, threading, time, signal
+import neopixel, board
 import StateMachine, IdleState, PlayState
 
+ORDER = neopixel.GRB
+LED_COUNT = 70
 states = {
     'IdleState': IdleState.IdleState,
     'PlayState': PlayState.PlayState
 }
 
-state_machine = StateMachine.StateMachine(states)
+pixels = neopixel.NeoPixel(board.D18, LED_COUNT, auto_write=False, pixel_order=ORDER)
+
+state_machine = StateMachine.StateMachine(states, {"pixels": pixels})
 state_machine.change_state('PlayState')
 
 class SignalCatcher:

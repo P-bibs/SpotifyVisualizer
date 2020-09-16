@@ -1,16 +1,38 @@
-from BaseState import BaseState
 import ApiLedInterfacer
+import auth
+import config_utils
+from BaseState import BaseState
+
 
 class PlayState(BaseState):
-    def __init__(self, g_state_machine, extra_state):
+    def __init__(self, g_state_machine, global_state):
         self.g_state_machine = g_state_machine
-        if "beat_line" in extra_state:
-            self.interfacer = ApiLedInterfacer.ApiLedInterfacer(g_state_machine, extra_state['beat_line'])
-        else:
-            self.interfacer = ApiLedInterfacer.ApiLedInterfacer(g_state_machine, None)
+
+        # Fetch refresh token if needed
+        config = config_utils.read_config()
+        config = self.check_and_update_refresh_token(config)
+
+        self.interfacer = ApiLedInterfacer.ApiLedInterfacer(g_state_machine, global_state["pixels"], config)
+
+    def check_and_update_refresh_token(self, config):
+        # If a refresh token doesn't exist, request one
+        if config['DATA']['refresh_token'] == '':
+            response = auth.request_token(
+                config['SETUP']['id'],
+                config['SETUP']['secret'],
+                config['DATA']['code'],
+                config['SETUP']['redirect']
+            )
+
+            refresh_token = response['refresh_token']
+            config['DATA'] = {**config['DATA'], "refresh_token": refresh_token}
+            config_utils.write_config(config)
+
+        return config
 
     def update(self, dt):
         self.interfacer.update(dt)
 
     def exit(self):
         self.interfacer.exit()
+        print("Play state exit completed")

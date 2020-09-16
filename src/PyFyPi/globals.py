@@ -1,0 +1,1 @@
+CONFIG_PATH = "/home/pi/Development/PyFyPi/config.json"
