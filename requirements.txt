@@ -37,6 +37,6 @@ termcolor==1.1.0
 tldr==0.5
 tqdm==4.32.2
 twine==1.13.0
-urllib3==1.25.3
+urllib3==1.25.8
 virtualenv==16.5.0
 webencodings==0.5.1
